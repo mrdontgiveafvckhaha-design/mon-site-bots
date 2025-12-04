@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoBot Pro - Automatisations IA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 25px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .packs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .pack-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pack-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .pack-card.featured::before {
+            content: '⭐ POPULAIRE';
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .pack-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .pack-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .pack-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .pack-price {
+            font-size: 2.5em;
+            color: #333;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .pack-price span {
+            font-size: 0.5em;
+            color: #999;
+        }
+
+        .pack-features {
+            list-style: none;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .pack-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .pack-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pack-features li:before {
+            content: '✓ ';
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .buy-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.15em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .bots-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .bots-section h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .bot-category {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .bot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .bot-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .bot-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .bot-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .bot-name {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .bot-description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+
+        .bot-details {
+            background: rgba(255,255,255,0.7);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .bot-price {
+            font-size: 1.8em;
+            color: #667eea;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .quote-form {
+            background: white;
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 45px;
+            border-radius: 20px;
+            max-width: 550px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 2.5em;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            color: white;
+        }
+
+        .contact-box p {
+            margin: 12px 0;
+            font-size: 1.1em;
+        }
+
+        .contact-box strong {
+            font-size: 1.15em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .packs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pack-price {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AutoBot Pro</h1>
+            <p class="tagline">Automatisations IA de pointe pour révolutionner votre business</p>
+            <nav>
+                <button class="nav-btn active" onclick="showSection('packs')">📦 Packs Abonnement</button>
+                <button class="nav-btn" onclick="showSection('bots')">🚀 Bots Individuels</button>
+                <button class="nav-btn" onclick="showSection('devis')">💬 Demander un Devis</button>
+            </nav>
+        </header>
+
+        <!-- Section Packs -->
+        <div id="packs" class="section active">
+            <div class="packs-grid">
+                <div class="pack-card">
+                    <div class="pack-icon">🛍️</div>
+                    <h2 class="pack-title">Pack Vinted Starter</h2>
+                    <p class="pack-description">Automatisez vos ventes Vinted avec notre IA révolutionnaire</p>
+                    <div class="pack-price">39€<span>/mois</span></div>
+                    <ul class="pack-features">
+                        <li>Alerte email produits toutes les 2-3h</li>
+                        <li>Analyse automatique des prix du marché</li>
+                        <li>Recherche personnalisée selon vos critères</li>
+                        <li>Notifications en temps réel</li>
+                        <li>Support par email</li>
+                    </ul>
+                    <button class="buy-btn" onclick="openPayment('Pack Vinted Starter', '39€/mois')">Souscrire maintenant</button>
+                </div>
+
+                <div class="pack-card featured">
+                    <div class="pack-icon">⚡</div>
+                    <h2 class="pack-title">Pack Vinted Pro</h2>
+                    <p class="pack-description">La solution complète pour vendeurs professionnels</p>
+                    <div class="pack-price">79€<span>/mois</span></div>
+                    <ul class="pack-features">
+                        <li>Tout du Pack Starter</li>
+                        <li>Création automatique d'annonces (photo → texte)</li>
+                        <li>Prix optimisé via IA multi-plateformes</li>
+                        <li>Analyse comparative tous sites de revente</li>
+                        <li>Descriptions IA ultra-optimisées</li>
+                        <li>Support prioritaire WhatsApp</li>
+                    </ul>
+                    <button class="buy-btn" onclick="openPayment('Pack Vinted Pro', '79€/mois')">Souscrire maintenant</button>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-icon">🎬</div>
+                    <h2 class="pack-title">Pack Créateur de Contenu</h2>
+                    <p class="pack-description">Créez du contenu viral en quelques clics</p>
+                    <div class="pack-price">69€<span>/mois</span></div>
+                    <ul class="pack-features">
+                        <li>Montage vidéo automatique par IA</li>
+                        <li>Choix du style (dynamique, pro, fun...)</li>
+                        <li>Traduction vocale instantanée</li>
+                        <li>Conservation de votre voix originale</li>
+                        <li>Support multi-langues illimité</li>
+                        <li>Rendu HD professionnel</li>
+                    </ul>
+                    <button class="buy-btn" onclick="openPayment('Pack Créateur de Contenu', '69€/mois')">Souscrire maintenant</button>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-icon">👑</div>
+                    <h2 class="pack-title">Pack Complet Ultimate</h2>
+                    <p class="pack-description">Accès illimité à tous nos bots actuels et futurs</p>
+                    <div class="pack-price">149€<span>/mois</span></div>
+                    <ul class="pack-features">
+                        <li>TOUS les bots Vinted inclus</li>
+                        <li>TOUS les bots de création de contenu</li>
+                        <li>Accès anticipé aux nouveaux bots</li>
+                        <li>Personnalisation sur-mesure</li>
+                        <li>Support VIP dédié 24/7</li>
+                        <li>Formation personnelle incluse</li>
+                        <li>Mises à jour gratuites à vie</li>
+                    </ul>
+                    <button class="buy-btn" onclick="openPayment('Pack Complet Ultimate', '149€/mois')">Souscrire maintenant</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Bots Individuels -->
+        <div id="bots" class="section">
+            <div class="bots-section">
+                <h2>🎯 Nos Bots IA Disponibles</h2>
+                
+                <!-- Catégorie Vinted -->
+                <div class="bot-category">
+                    <h3 class="category-title">🛍️ Bots Vinted</h3>
+                    <div class="bot-grid">
+                        <div class="bot-card">
+                            <div class="bot-icon">🔔</div>
+                            <h4 class="bot-name">Bot Alerte Vinted</h4>
+                            <p class="bot-description">Soyez le premier informé des nouvelles annonces correspondant exactement à vos critères</p>
+                            <div class="bot-details">
+                                <strong>Fonctionnalités :</strong><br>
+                                • Alertes email toutes les 2-3h<br>
+                                • Recherche multi-critères personnalisée<br>
+                                • Filtres avancés (taille, prix, état...)<br>
+                                • Notifications instantanées des bonnes affaires
+                            </div>
+                            <div class="bot-price">199€</div>
+                            <button class="buy-btn" onclick="openPayment('Bot Alerte Vinted', '199€')">Acheter</button>
+                        </div>
+
+                        <div class="bot-card">
+                            <div class="bot-icon">📸</div>
+                            <h4 class="bot-name">Bot Vente Automatique</h4>
+                            <p class="bot-description">Prenez une photo, notre IA se charge de TOUT le reste !</p>
+                            <div class="bot-details">
+                                <strong>Fonctionnalités :</strong><br>
+                                • Création automatique d'annonces complètes<br>
+                                • Génération de textes optimisés SEO<br>
+                                • Analyse de marché multi-plateformes<br>
+                                • Prix optimal basé sur l'IA<br>
+                                • Comparaison Vinted + autres sites
+                            </div>
+                            <div class="bot-price">349€</div>
+                            <button class="buy-btn" onclick="openPayment('Bot Vente Automatique', '349€')">Acheter</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Catégorie Création de Contenu -->
+                <div class="bot-category">
+                    <h3 class="category-title">🎬 Bots Création de Contenu</h3>
+                    <div class="bot-grid">
+                        <div class="bot-card">
+                            <div class="bot-icon">✂️</div>
+                            <h4 class="bot-name">Bot Montage Vidéo IA</h4>
+                            <p class="bot-description">Montage professionnel automatique en quelques secondes</p>
+                            <div class="bot-details">
+                                <strong>Fonctionnalités :</strong><br>
+                                • Montage automatique intelligent<br>
+                                • Choix du style (dynamique, pro, cinématique...)<br>
+                                • Transitions et effets automatiques<br>
+                                • Musique adaptée au style<br>
+                                • Export HD/4K<br>
+                                • Compatible TikTok, Instagram, YouTube
+                            </div>
+                            <div class="bot-price">299€</div>
+                            <button class="buy-btn" onclick="openPayment('Bot Montage Vidéo IA', '299€')">Acheter</button>
+                        </div>
+
+                        <div class="bot-card">
+                            <div class="bot-icon">🗣️</div>
+                            <h4 class="bot-name">Bot Traduction Vocale</h4>
+                            <p class="bot-description">Parlez toutes les langues en gardant VOTRE voix !</p>
+                            <div class="bot-details">
+                                <strong>Fonctionnalités :</strong><br>
+                                • Traduction instantanée dans 50+ langues<br>
+                                • Clonage et conservation de votre voix<br>
+                                • Synchronisation labiale parfaite<br>
+                                • Qualité studio professionnelle<br>
+                                • Export audio ou vidéo<br>
+                                • Idéal pour contenu international
+                            </div>
+                            <div class="bot-price">279€</div>
+                            <button class="buy-btn" onclick="openPayment('Bot Traduction Vocale', '279€')">Acheter</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; text-align: center; margin-top: 40px; color: white;">
+                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">🚀 D'autres bots arrivent bientôt !</h3>
+                    <p style="font-size: 1.1em;">Nous développons constamment de nouveaux bots pour automatiser votre business. Abonnez-vous pour bénéficier de tous les futurs bots inclus !</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Devis -->
+        <div id="devis" class="section">
+            <div class="quote-form">
+                <h2 style="color: #667eea; margin-bottom: 10px; font-size: 2.5em; text-align: center;">💬 Demande de Devis</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Besoin d'un bot personnalisé ? Décrivez votre projet !</p>
+                <form onsubmit="submitQuote(event)">
+                    <div class="form-group">
+                        <label for="name">👤 Nom complet *</label>
+                        <input type="text" id="name" required placeholder="Jean Dupont">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">📧 Email *</label>
+                        <input type="email" id="email" required placeholder="votre@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">📱 Téléphone / WhatsApp</label>
+                        <input type="tel" id="phone" placeholder="06 12 34 56 78">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="botType">🤖 Type d'automatisation souhaitée *</label>
+                        <select id="botType" required>
+                            <option value="">-- Sélectionnez --</option>
+                            <option value="vinted">Bot Vinted (alerte ou vente auto)</option>
+                            <option value="montage">Bot Montage Vidéo</option>
+                            <option value="traduction">Bot Traduction Vocale</option>
+                            <option value="reseaux">Bot Réseaux Sociaux</option>
+                            <option value="ecommerce">Bot E-commerce</option>
+                            <option value="personnalise">Bot Sur-Mesure (expliquez ci-dessous)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">📝 Décrivez votre besoin en détail *</label>
+                        <textarea id="description" required placeholder="Expliquez ce que vous souhaitez automatiser, vos objectifs, les fonctionnalités désirées..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Envoyer ma demande 🚀</button>
+                    <div class="success-message" id="successMsg">✅ Demande envoyée avec succès ! Nous vous recontacterons sous 24h maximum.</div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de paiement -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 style="color: #667eea; margin-bottom: 25px; font-size: 2em;">🎉 Finaliser votre achat</h2>
+            <div id="paymentDetails"></div>
+            <p style="margin: 25px 0; color: #666; font-size: 1.1em; text-align: center;">Pour procéder au paiement et activer votre bot, contactez-nous :</p>
+            <div class="contact-box">
+                <p><strong>📧 Email :</strong> rzinedine320@gmail.com</p>
+                <p><strong>📱 WhatsApp :</strong> 07 67 28 21 33</p>
+                <p><strong>💬 Réponse :</strong> Sous 2h en moyenne</p>
+            </div>
+            <p style="text-align: center; color: #999; font-size: 0.9em; margin-top: 20px;">Modes de paiement : Virement, PayPal, Stripe</p>
+            <button class="buy-btn" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function openPayment(productName, price) {
+            const modal = document.getElementById('paymentModal');
+            const details = document.getElementById('paymentDetails');
+            details.innerHTML = `
+                <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 25px; border-radius: 15px; margin-bottom: 25px; text-align: center;">
+                    <h3 style="color: #333; font-size: 1.8em; margin-bottom: 10px;">${productName}</h3>
+                    <p style="font-size: 2.5em; color: #667eea; margin: 15px 0; font-weight: bold;">${price}</p>
+                    <p style="color: #666; margin-top: 10px;">✨ Activation immédiate après paiement</p>
+                </div>
+            `;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        function submitQuote(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const botType = document.getElementById('botType').value;
+            const description = document.getElementById('description').value;
+
+            const subject = encodeURIComponent('🤖 Demande de devis AutoBot Pro - ' + botType);
+            const body = encodeURIComponent(`
+Nouvelle demande de devis :
+
+👤 Nom : ${name}
+📧 Email : ${email}
+📱 Téléphone : ${phone || 'Non renseigné'}
+🤖 Type de bot : ${botType}
+
+📝 Description détaillée :
+${description}
+
+---
+Envoyé depuis AutoBot Pro
+            `);
+            
+            window.location.href = `mailto:rzinedine320@gmail.com?subject=${subject}&body=${body}`;
+            
+            document.getElementById('successMsg').style.display = 'block';
+            e.target.reset();
+            
+            setTimeout(() => {
+                document.getElementById('successMsg').style.display = 'none';
+            }, 6000);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
