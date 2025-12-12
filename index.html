@@ -1501,51 +1501,80 @@ Message à analyser : "${message}"`;
         });
 
         async function analyzePronote() {
-            if (!pronoteFile) return;
+    if (!pronoteFile) return;
 
-            const btn = document.getElementById('analyzePronoteBtn');
-            const resultBox = document.getElementById('pronoteResult');
+    const btn = document.getElementById('analyzePronoteBtn');
+    const resultBox = document.getElementById('pronoteResult');
 
-            btn.disabled = true;
-            btn.innerHTML = '<div class="loading-spinner"></div> Extraction en cours...';
-            resultBox.classList.remove('show', 'safe');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="loading-spinner"></div> Extraction en cours...';
+    resultBox.classList.remove('show', 'safe', 'danger');
 
-            const base64 = await fileToBase64(pronoteFile);
+    const base64 = await fileToBase64(pronoteFile);
 
-            const prompt = `Analyse cette copie d'examen et extrais les informations. Réponds UNIQUEMENT avec un JSON :
+    const prompt = `Analyse cette image. D'ABORD, détermine si c'est une COPIE D'EXAMEN (feuille manuscrite avec nom d'élève et note visible).
+
+Si ce N'EST PAS une copie d'examen (par exemple un maillot, un objet, etc.), réponds :
 {
+  "estCopie": false,
+  "raison": "Explication courte"
+}
+
+Si c'est UNE COPIE D'EXAMEN, extrais les infos :
+{
+  "estCopie": true,
   "nom": "<nom de famille>",
   "prenom": "<prénom>",
   "note": "<note sur 20>"
 }
 
-Si tu ne trouves pas une info, mets "Non trouvé" pour les textes ou "0" pour la note.`;
+Réponds UNIQUEMENT avec le JSON, rien d'autre.`;
 
-            const result = await callAIWithFallback(prompt, [base64]);
+    const result = await callAIWithFallback(prompt, [base64]);
 
-            btn.disabled = false;
-            btn.innerHTML = '🔍 Extraire les données';
+    btn.disabled = false;
+    btn.innerHTML = '🔍 Extraire les données';
 
-            if (result.text === 'SIMULATED') {
-                displayPronoteResult({
-                    nom: 'DUPONT',
-                    prenom: 'Jean',
-                    note: '15'
-                }, 'Simulé');
+    if (result.text === 'SIMULATED') {
+        displayPronoteResult({
+            nom: 'DUPONT',
+            prenom: 'Jean',
+            note: '15'
+        }, 'Simulé');
+    } else {
+        try {
+            let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            const data = JSON.parse(cleanText);
+            
+            if (data.estCopie === false) {
+                // Ce n'est pas une copie d'examen
+                resultBox.className = 'result-box danger show';
+                resultBox.innerHTML = `
+                    <h4 style="text-align: center; font-size: 1.8em; color: #ff4444; margin-bottom: 20px;">❌ Image Non Valide</h4>
+                    <div class="result-details">
+                        <p style="text-align: center; font-size: 1.1em; color: #666; line-height: 1.6;">
+                            Cette image ne semble pas être une copie d'examen.<br><br>
+                            <strong>Raison :</strong> ${data.raison}
+                        </p>
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px;">
+                            <p style="margin: 0; color: #856404;">
+                                💡 <strong>Astuce :</strong> Uploadez une photo d'une feuille d'examen manuscrite avec un nom et une note visible.
+                            </p>
+                        </div>
+                    </div>
+                `;
             } else {
-                try {
-                    let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-                    const data = JSON.parse(cleanText);
-                    displayPronoteResult(data, result.apiUsed);
-                } catch (e) {
-                    displayPronoteResult({
-                        nom: 'Erreur',
-                        prenom: 'Analyse',
-                        note: '0'
-                    }, result.apiUsed);
-                }
+                displayPronoteResult(data, result.apiUsed);
             }
+        } catch (e) {
+            resultBox.className = 'result-box danger show';
+            resultBox.innerHTML = `
+                <h4 style="text-align: center; font-size: 1.8em; color: #ff4444; margin-bottom: 20px;">⚠️ Erreur d'Analyse</h4>
+                <p style="text-align: center; color: #666;">Impossible d'analyser cette image. Assurez-vous qu'il s'agit bien d'une copie d'examen lisible.</p>
+            `;
         }
+    }
+}
 
         function displayPronoteResult(data, apiUsed) {
             const resultBox = document.getElementById('pronoteResult');
@@ -1591,3 +1620,4 @@ Si tu ne trouves pas une info, mets "Non trouvé" pour les textes ou "0" pour la
     </script>
 </body>
 </html>
+
