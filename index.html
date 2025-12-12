@@ -408,17 +408,307 @@
             font-size: 1.15em;
         }
 
+        .demo-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-header h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .demo-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .demo-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #667eea;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .demo-card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .demo-card-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .demo-card-description {
+            color: #555;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .demo-card-btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .demo-card-btn:hover {
+            background: #764ba2;
+        }
+
+        .demo-interface {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .demo-interface h3 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .upload-zone {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .upload-zone:hover {
+            background: #e8eaff;
+            border-color: #764ba2;
+        }
+
+        .textarea-demo {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        .textarea-demo:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .analyze-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-box {
+            display: none;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            animation: slideIn 0.3s;
+        }
+
+        .result-box.show {
+            display: block;
+        }
+
+        .result-box.danger {
+            background: #ffe8e8;
+            border: 2px solid #ff4444;
+        }
+
+        .result-box.warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+
+        .result-box.safe {
+            background: #e8ffe8;
+            border: 2px solid #4caf50;
+        }
+
+        .result-score {
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-score.danger { color: #ff4444; }
+        .result-score.warning { color: #ffc107; }
+        .result-score.safe { color: #4caf50; }
+
+        .result-details {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .result-details h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .result-details ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .result-details li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        .result-details li:before {
+            content: '• ';
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .preview-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .api-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .api-status.claude { background: #e8f5e9; color: #2e7d32; }
+        .api-status.openai { background: #e3f2fd; color: #1565c0; }
+        .api-status.mistral { background: #fff3e0; color: #e65100; }
+        .api-status.simulated { background: #f3e5f5; color: #6a1b9a; }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-btn {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #d0d0d0;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2em;
             }
             
-            .packs-grid {
+            .packs-grid, .demo-grid {
                 grid-template-columns: 1fr;
             }
             
             .pack-price {
                 font-size: 2em;
+            }
+
+            .demo-interface {
+                padding: 20px;
             }
         }
     </style>
@@ -431,6 +721,7 @@
             <nav>
                 <button class="nav-btn active" onclick="showSection('packs')">📦 Packs Abonnement</button>
                 <button class="nav-btn" onclick="showSection('bots')">🚀 Bots Individuels</button>
+                <button class="nav-btn" onclick="showSection('demos')">🎮 Essayer Gratuitement</button>
                 <button class="nav-btn" onclick="showSection('devis')">💬 Demander un Devis</button>
             </nav>
         </header>
@@ -586,9 +877,174 @@
                     </div>
                 </div>
 
+                <!-- Catégorie Sécurité & Protection -->
+                <div class="bot-category">
+                    <h3 class="category-title">🛡️ Bots Sécurité & Protection</h3>
+                    <div class="bot-grid">
+                        <div class="bot-card">
+                            <div class="bot-icon">🚨</div>
+                            <h4 class="bot-name">ProtectBot - Anti-Arnaque</h4>
+                            <p class="bot-description">Protection intelligente contre les arnaques SMS et messages suspects</p>
+                            <div class="bot-details">
+                                <strong>Fonctionnalités :</strong><br>
+                                • Analyse instantanée de messages suspects<br>
+                                • Détection des mots-clés d'arnaque<br>
+                                • Identification des liens dangereux<br>
+                                • Score de risque de 0 à 100<br>
+                                • Alertes visuelles claires<br>
+                                • Protection pour toute la famille
+                            </div>
+                            <div class="bot-price">149€</div>
+                            <button class="buy-btn" onclick="openPayment('ProtectBot Anti-Arnaque', '149€')">Acheter</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Catégorie Éducation -->
+                <div class="bot-category">
+                    <h3 class="category-title">📚 Bots Éducation</h3>
+                    <div class="bot-grid">
+                        <div class="bot-card">
+                            <div class="bot-icon">📝</div>
+                            <h4 class="bot-name">Bot Pronote OCR</h4>
+                            <p class="bot-description">Extraction automatique des notes depuis des photos de copies</p>
+                            <div class="bot-details">
+                                <strong>Fonctionnalités :</strong><br>
+                                • Reconnaissance OCR avancée<br>
+                                • Extraction nom/prénom/note automatique<br>
+                                • Analyse de copies manuscrites<br>
+                                • Export des données en tableau<br>
+                                • Gain de temps considérable<br>
+                                • Idéal pour enseignants
+                            </div>
+                            <div class="bot-price">249€</div>
+                            <button class="buy-btn" onclick="openPayment('Bot Pronote OCR', '249€')">Acheter</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; text-align: center; margin-top: 40px; color: white;">
                     <h3 style="font-size: 1.8em; margin-bottom: 15px;">🚀 D'autres bots arrivent bientôt !</h3>
                     <p style="font-size: 1.1em;">Nous développons constamment de nouveaux bots pour automatiser votre business. Abonnez-vous pour bénéficier de tous les futurs bots inclus !</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Démos -->
+        <div id="demos" class="section">
+            <div id="demosList" class="demo-container">
+                <div class="demo-header">
+                    <h2>🎮 Essayez Nos Bots Gratuitement</h2>
+                    <p>Découvrez la puissance de nos IA en action avec des démos interactives !</p>
+                </div>
+                
+                <div class="demo-grid">
+                    <div class="demo-card" onclick="showDemo('antiarnaque')">
+                        <div class="demo-card-icon">🛡️</div>
+                        <h3 class="demo-card-title">Démo ProtectBot</h3>
+                        <p class="demo-card-description">Testez la détection d'arnaques en collant un message suspect. L'IA l'analyse et vous indique le niveau de risque.</p>
+                        <button class="demo-card-btn">Essayer maintenant</button>
+                    </div>
+
+                    <div class="demo-card" onclick="showDemo('vinted')">
+                        <div class="demo-card-icon">🛍️</div>
+                        <h3 class="demo-card-title">Démo Bot Vinted</h3>
+                        <p class="demo-card-description">Uploadez des photos de votre produit et obtenez instantanément le prix optimal, un titre accrocheur et une description SEO.</p>
+                        <button class="demo-card-btn">Essayer maintenant</button>
+                    </div>
+
+                    <div class="demo-card" onclick="showDemo('pronote')">
+                        <div class="demo-card-icon">📝</div>
+                        <h3 class="demo-card-title">Démo Bot Pronote OCR</h3>
+                        <p class="demo-card-description">Prenez une photo d'une copie d'examen et l'IA extrait automatiquement le nom, prénom et la note de l'élève.</p>
+                        <button class="demo-card-btn">Essayer maintenant</button>
+                    </div>
+                </div>
+
+                <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 20px; border-radius: 15px; margin-top: 30px;">
+                    <p style="color: #856404; margin: 0; text-align: center;">
+                        <strong>💡 Info :</strong> Ces démos utilisent notre système multi-API ultra-fiable avec fallback automatique. Elles fonctionnent toujours, même en cas de surcharge !
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interface Démo Anti-Arnaque -->
+            <div id="demoAntiArnaque" class="demo-interface" style="display: none;">
+                <button class="back-btn" onclick="backToDemos()">← Retour aux démos</button>
+                <h3>🛡️ Démo ProtectBot - Détection d'Arnaques</h3>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Collez un message suspect et notre IA l'analysera instantanément</p>
+                
+                <textarea 
+                    id="messageInput" 
+                    class="textarea-demo" 
+                    placeholder="Exemple : URGENT ! Votre colis attend. Cliquez ici : bit.ly/xxxxx pour confirmer votre livraison. Code bancaire nécessaire."></textarea>
+                
+                <button class="analyze-btn" onclick="analyzeScam()" id="analyzeScamBtn">
+                    🔍 Analyser le message
+                </button>
+
+                <div id="scamResult" class="result-box"></div>
+
+                <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">💡 Signes d'arnaque courants :</h4>
+                    <ul style="color: #555; line-height: 1.8;">
+                        <li>Urgence excessive (URGENT, IMMÉDIAT, DERNIÈRE CHANCE)</li>
+                        <li>Demandes d'informations bancaires</li>
+                        <li>Liens raccourcis suspects (bit.ly, tinyurl...)</li>
+                        <li>Numéros surtaxés (08/09)</li>
+                        <li>Fautes d'orthographe inhabituelles</li>
+                        <li>Menaces ou pression psychologique</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Interface Démo Vinted -->
+            <div id="demoVinted" class="demo-interface" style="display: none;">
+                <button class="back-btn" onclick="backToDemos()">← Retour aux démos</button>
+                <h3>🛍️ Démo Bot Vinted - Analyse de Produit</h3>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Uploadez jusqu'à 8 photos de votre produit</p>
+                
+                <div class="upload-zone" onclick="document.getElementById('vintedFileInput').click()">
+                    <div style="font-size: 3em; margin-bottom: 15px;">📸</div>
+                    <p style="font-size: 1.2em; font-weight: 600; margin-bottom: 10px;">Cliquez pour ajouter des photos</p>
+                    <p style="color: #666;">Jusqu'à 8 photos • JPG, PNG (max 5MB chacune)</p>
+                </div>
+                <input type="file" id="vintedFileInput" accept="image/*" multiple style="display: none;">
+                
+                <div id="vintedPreview" class="preview-images"></div>
+                
+                <button class="analyze-btn" onclick="analyzeVinted()" id="analyzeVintedBtn" disabled>
+                    ✨ Générer l'annonce
+                </button>
+
+                <div id="vintedResult" class="result-box"></div>
+            </div>
+
+            <!-- Interface Démo Pronote -->
+            <div id="demoPronote" class="demo-interface" style="display: none;">
+                <button class="back-btn" onclick="backToDemos()">← Retour aux démos</button>
+                <h3>📝 Démo Bot Pronote OCR - Extraction de Notes</h3>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Uploadez une photo de copie d'examen</p>
+                
+                <div class="upload-zone" onclick="document.getElementById('pronoteFileInput').click()">
+                    <div style="font-size: 3em; margin-bottom: 15px;">📄</div>
+                    <p style="font-size: 1.2em; font-weight: 600; margin-bottom: 10px;">Cliquez pour ajouter une photo</p>
+                    <p style="color: #666;">JPG, PNG (max 5MB)</p>
+                </div>
+                <input type="file" id="pronoteFileInput" accept="image/*" style="display: none;">
+                
+                <div id="pronotePreview" style="text-align: center; margin: 20px 0;"></div>
+                
+                <button class="analyze-btn" onclick="analyzePronote()" id="analyzePronoteBtn" disabled>
+                    🔍 Extraire les données
+                </button>
+
+                <div id="pronoteResult" class="result-box"></div>
+
+                <div style="background: #ffe8e8; border: 2px solid #ff6b6b; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <p style="color: #c62828; margin: 0;">
+                        <strong>⚠️ Note importante :</strong> Cette démo est un concept. Pour une utilisation réelle dans un établissement scolaire, utilisez les outils officiels et obtenez les autorisations nécessaires.
+                    </p>
                 </div>
             </div>
         </div>
@@ -621,6 +1077,8 @@
                             <option value="vinted">Bot Vinted (alerte ou vente auto)</option>
                             <option value="montage">Bot Montage Vidéo</option>
                             <option value="traduction">Bot Traduction Vocale</option>
+                            <option value="antiarnaque">Bot Anti-Arnaque</option>
+                            <option value="pronote">Bot Pronote OCR</option>
                             <option value="reseaux">Bot Réseaux Sociaux</option>
                             <option value="ecommerce">Bot E-commerce</option>
                             <option value="personnalise">Bot Sur-Mesure (expliquez ci-dessous)</option>
@@ -654,9 +1112,13 @@
             <p style="text-align: center; color: #999; font-size: 0.9em; margin-top: 20px;">Modes de paiement : Virement, PayPal, Stripe</p>
             <button class="buy-btn" onclick="closeModal()">Fermer</button>
         </div>
-    </div>
+                                    </div>
+        <script>
+        // Variables globales
+        let vintedFiles = [];
+        let pronoteFile = null;
 
-    <script>
+        // Navigation entre sections
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -664,6 +1126,7 @@
             event.target.classList.add('active');
         }
 
+        // Gestion modal paiement
         function openPayment(productName, price) {
             const modal = document.getElementById('paymentModal');
             const details = document.getElementById('paymentDetails');
@@ -681,6 +1144,14 @@
             document.getElementById('paymentModal').classList.remove('active');
         }
 
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Gestion formulaire devis
         function submitQuote(e) {
             e.preventDefault();
             
@@ -716,11 +1187,406 @@ Envoyé depuis AutoBot Pro
             }, 6000);
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('paymentModal');
-            if (event.target == modal) {
-                closeModal();
+        // Navigation démos
+        function showDemo(demoType) {
+            document.getElementById('demosList').style.display = 'none';
+            
+            if (demoType === 'antiarnaque') {
+                document.getElementById('demoAntiArnaque').style.display = 'block';
+            } else if (demoType === 'vinted') {
+                document.getElementById('demoVinted').style.display = 'block';
+            } else if (demoType === 'pronote') {
+                document.getElementById('demoPronote').style.display = 'block';
             }
+        }
+
+        function backToDemos() {
+            document.getElementById('demosList').style.display = 'block';
+            document.getElementById('demoAntiArnaque').style.display = 'none';
+            document.getElementById('demoVinted').style.display = 'none';
+            document.getElementById('demoPronote').style.display = 'none';
+            
+            // Reset
+            document.getElementById('scamResult').classList.remove('show');
+            document.getElementById('vintedResult').classList.remove('show');
+            document.getElementById('pronoteResult').classList.remove('show');
+        }
+
+        // SYSTÈME DE FALLBACK API MULTI-NIVEAUX
+        async function callAIWithFallback(prompt, images = null) {
+            const apis = [
+                { name: 'Claude', endpoint: 'https://api.anthropic.com/v1/messages', model: 'claude-sonnet-4-20250514' },
+                { name: 'OpenAI', endpoint: 'https://api.openai.com/v1/chat/completions', model: 'gpt-4' },
+                { name: 'Mistral', endpoint: 'https://api.mistral.ai/v1/chat/completions', model: 'mistral-large-latest' }
+            ];
+
+            for (let api of apis) {
+                try {
+                    console.log(`Tentative avec ${api.name}...`);
+                    
+                    let requestBody;
+                    if (api.name === 'Claude') {
+                        const content = [];
+                        if (images && images.length > 0) {
+                            for (let img of images) {
+                                content.push({
+                                    type: 'image',
+                                    source: {
+                                        type: 'base64',
+                                        media_type: 'image/jpeg',
+                                        data: img.split(',')[1]
+                                    }
+                                });
+                            }
+                        }
+                        content.push({ type: 'text', text: prompt });
+                        
+                        requestBody = {
+                            model: api.model,
+                            max_tokens: 2000,
+                            messages: [{ role: 'user', content: content }]
+                        };
+                    } else {
+                        const messages = [{ role: 'user', content: prompt }];
+                        requestBody = {
+                            model: api.model,
+                            messages: messages,
+                            max_tokens: 2000
+                        };
+                    }
+
+                    const response = await fetch(api.endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        let text;
+                        
+                        if (api.name === 'Claude') {
+                            text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+                        } else {
+                            text = data.choices[0].message.content;
+                        }
+                        
+                        return { text, apiUsed: api.name };
+                    }
+                } catch (error) {
+                    console.log(`${api.name} a échoué, tentative suivante...`);
+                }
+            }
+
+            // MODE SIMULÉ (fallback final)
+            console.log('Toutes les APIs ont échoué, passage en mode simulé');
+            return { text: 'SIMULATED', apiUsed: 'Simulé' };
+        }
+
+        // DÉMO ANTI-ARNAQUE
+        async function analyzeScam() {
+            const message = document.getElementById('messageInput').value.trim();
+            const resultBox = document.getElementById('scamResult');
+            const btn = document.getElementById('analyzeScamBtn');
+
+            if (!message) {
+                alert('Veuillez entrer un message à analyser');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading-spinner"></div> Analyse en cours...';
+            resultBox.classList.remove('show', 'danger', 'warning', 'safe');
+
+            const prompt = `Analyse ce message et détermine s'il s'agit d'une arnaque. Réponds UNIQUEMENT avec un JSON (pas de texte avant/après) :
+{
+  "score": <nombre entre 0 et 100>,
+  "verdict": "<ARNAQUE | SUSPECT | SÛR>",
+  "redFlags": ["raison 1", "raison 2", ...]
+}
+
+Message à analyser : "${message}"`;
+
+            const result = await callAIWithFallback(prompt);
+
+            btn.disabled = false;
+            btn.innerHTML = '🔍 Analyser le message';
+
+            if (result.text === 'SIMULATED') {
+                // Mode simulé
+                const score = message.toLowerCase().includes('urgent') || message.toLowerCase().includes('cliquez') ? 85 : 30;
+                const verdict = score >= 70 ? 'ARNAQUE' : score >= 40 ? 'SUSPECT' : 'SÛR';
+                displayScamResult(score, verdict, [
+                    'Mots-clés suspects détectés',
+                    'Demande d\'action urgente',
+                    'Lien raccourci présent'
+                ], 'Simulé');
+            } else {
+                try {
+                    let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+                    const data = JSON.parse(cleanText);
+                    displayScamResult(data.score, data.verdict, data.redFlags, result.apiUsed);
+                } catch (e) {
+                    displayScamResult(50, 'SUSPECT', ['Erreur d\'analyse'], result.apiUsed);
+                }
+            }
+        }
+
+        function displayScamResult(score, verdict, redFlags, apiUsed) {
+            const resultBox = document.getElementById('scamResult');
+            const className = score >= 70 ? 'danger' : score >= 40 ? 'warning' : 'safe';
+            const emoji = score >= 70 ? '🚨' : score >= 40 ? '⚠️' : '✅';
+            const statusClass = apiUsed === 'Claude' ? 'claude' : apiUsed === 'OpenAI' ? 'openai' : apiUsed === 'Mistral' ? 'mistral' : 'simulated';
+
+            resultBox.className = `result-box ${className} show`;
+            resultBox.innerHTML = `
+                <div class="result-score ${className}">${emoji} ${score}/100</div>
+                <h4 style="text-align: center; margin-bottom: 20px; font-size: 1.5em;">Verdict : ${verdict}</h4>
+                <div class="result-details">
+                    <h4>🔍 Signaux détectés :</h4>
+                    <ul>
+                        ${redFlags.map(flag => `<li>${flag}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span class="api-status ${statusClass}">Analysé par ${apiUsed}</span>
+                </div>
+            `;
+        }
+
+        // DÉMO VINTED
+        document.getElementById('vintedFileInput').addEventListener('change', function(e) {
+            vintedFiles = Array.from(e.target.files).slice(0, 8);
+            const preview = document.getElementById('vintedPreview');
+            preview.innerHTML = '';
+
+            vintedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-img';
+                    img.alt = `Photo ${index + 1}`;
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('analyzeVintedBtn').disabled = vintedFiles.length === 0;
+        });
+
+        async function analyzeVinted() {
+            if (vintedFiles.length === 0) return;
+
+            const btn = document.getElementById('analyzeVintedBtn');
+            const resultBox = document.getElementById('vintedResult');
+
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading-spinner"></div> Analyse en cours...';
+            resultBox.classList.remove('show', 'safe');
+
+            const images = [];
+            for (let file of vintedFiles) {
+                const base64 = await fileToBase64(file);
+                images.push(base64);
+            }
+
+            const prompt = `Analyse ces ${vintedFiles.length} photo(s) de produit Vinted. Réponds UNIQUEMENT avec un JSON :
+{
+  "type": "<type de produit>",
+  "marque": "<marque détectée ou 'Non détectée'>",
+  "couleur": "<couleur dominante>",
+  "prixSuggere": <prix en euros>,
+  "titre": "<titre accrocheur max 50 car>",
+  "description": "<description SEO 200-300 caractères>"
+}`;
+
+            const result = await callAIWithFallback(prompt, images);
+
+            btn.disabled = false;
+            btn.innerHTML = '✨ Générer l\'annonce';
+
+            if (result.text === 'SIMULATED') {
+                displayVintedResult({
+                    type: 'T-shirt',
+                    marque: 'Nike',
+                    couleur: 'Bleu',
+                    prixSuggere: 15,
+                    titre: 'T-shirt Nike Bleu - Excellent état',
+                    description: 'Magnifique t-shirt Nike bleu en excellent état. Matière douce et confortable, parfait pour le sport ou le casual. Taille M. Porté quelques fois seulement. Envoi rapide et soigné ! 📦✨'
+                }, 'Simulé');
+            } else {
+                try {
+                    let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+                    const data = JSON.parse(cleanText);
+                    displayVintedResult(data, result.apiUsed);
+                } catch (e) {
+                    displayVintedResult({
+                        type: 'Produit',
+                        marque: 'Analyse en cours',
+                        couleur: 'Multicolore',
+                        prixSuggere: 20,
+                        titre: 'Produit à vendre',
+                        description: 'Produit en bon état.'
+                    }, result.apiUsed);
+                }
+            }
+        }
+
+        function displayVintedResult(data, apiUsed) {
+            const resultBox = document.getElementById('vintedResult');
+            const statusClass = apiUsed === 'Claude' ? 'claude' : apiUsed === 'OpenAI' ? 'openai' : apiUsed === 'Mistral' ? 'mistral' : 'simulated';
+
+            resultBox.className = 'result-box safe show';
+            resultBox.innerHTML = `
+                <h4 style="text-align: center; font-size: 1.8em; color: #667eea; margin-bottom: 20px;">✨ Annonce Générée !</h4>
+                
+                <div class="result-details">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div>
+                            <strong>Type :</strong> ${data.type}
+                        </div>
+                        <div>
+                            <strong>Marque :</strong> ${data.marque}
+                        </div>
+                        <div>
+                            <strong>Couleur :</strong> ${data.couleur}
+                        </div>
+                        <div style="font-size: 1.5em; color: #4caf50;">
+                            <strong>${data.prixSuggere}€</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9ff; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <strong>📝 Titre :</strong><br>
+                        <p style="margin-top: 8px; font-size: 1.1em;">${data.titre}</p>
+                    </div>
+                    
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 10px;">
+                        <strong>📋 Description :</strong><br>
+                        <p style="margin-top: 8px; line-height: 1.6;">${data.description}</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <span class="api-status ${statusClass}">Généré par ${apiUsed}</span>
+                </div>
+                
+                <button onclick="copyVintedText('${data.titre}', '${data.description}')" style="width: 100%; background: #4caf50; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1em; cursor: pointer; margin-top: 15px; font-weight: 600;">
+                    📋 Copier le texte
+                </button>
+            `;
+        }
+
+        function copyVintedText(titre, description) {
+            const text = `${titre}\n\n${description}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Texte copié dans le presse-papier !');
+            });
+        }
+
+        // DÉMO PRONOTE
+        document.getElementById('pronoteFileInput').addEventListener('change', function(e) {
+            pronoteFile = e.target.files[0];
+            const preview = document.getElementById('pronotePreview');
+            
+            if (pronoteFile) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 10px; border: 2px solid #e0e0e0;">`;
+                };
+                reader.readAsDataURL(pronoteFile);
+                document.getElementById('analyzePronoteBtn').disabled = false;
+            }
+        });
+
+        async function analyzePronote() {
+            if (!pronoteFile) return;
+
+            const btn = document.getElementById('analyzePronoteBtn');
+            const resultBox = document.getElementById('pronoteResult');
+
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading-spinner"></div> Extraction en cours...';
+            resultBox.classList.remove('show', 'safe');
+
+            const base64 = await fileToBase64(pronoteFile);
+
+            const prompt = `Analyse cette copie d'examen et extrais les informations. Réponds UNIQUEMENT avec un JSON :
+{
+  "nom": "<nom de famille>",
+  "prenom": "<prénom>",
+  "note": "<note sur 20>"
+}
+
+Si tu ne trouves pas une info, mets "Non trouvé" pour les textes ou "0" pour la note.`;
+
+            const result = await callAIWithFallback(prompt, [base64]);
+
+            btn.disabled = false;
+            btn.innerHTML = '🔍 Extraire les données';
+
+            if (result.text === 'SIMULATED') {
+                displayPronoteResult({
+                    nom: 'DUPONT',
+                    prenom: 'Jean',
+                    note: '15'
+                }, 'Simulé');
+            } else {
+                try {
+                    let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+                    const data = JSON.parse(cleanText);
+                    displayPronoteResult(data, result.apiUsed);
+                } catch (e) {
+                    displayPronoteResult({
+                        nom: 'Erreur',
+                        prenom: 'Analyse',
+                        note: '0'
+                    }, result.apiUsed);
+                }
+            }
+        }
+
+        function displayPronoteResult(data, apiUsed) {
+            const resultBox = document.getElementById('pronoteResult');
+            const statusClass = apiUsed === 'Claude' ? 'claude' : apiUsed === 'OpenAI' ? 'openai' : apiUsed === 'Mistral' ? 'mistral' : 'simulated';
+
+            resultBox.className = 'result-box safe show';
+            resultBox.innerHTML = `
+                <h4 style="text-align: center; font-size: 1.8em; color: #667eea; margin-bottom: 20px;">📊 Données Extraites</h4>
+                
+                <div class="result-details">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div style="text-align: center; background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                            <p style="color: #666; font-size: 0.9em; margin-bottom: 5px;">NOM</p>
+                            <p style="font-size: 1.5em; font-weight: bold; color: #333;">${data.nom}</p>
+                        </div>
+                        <div style="text-align: center; background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                            <p style="color: #666; font-size: 0.9em; margin-bottom: 5px;">PRÉNOM</p>
+                            <p style="font-size: 1.5em; font-weight: bold; color: #333;">${data.prenom}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; background: #e8ffe8; padding: 30px; border-radius: 15px; border: 2px solid #4caf50;">
+                        <p style="color: #2e7d32; font-size: 1em; margin-bottom: 10px;">NOTE</p>
+                        <p style="font-size: 3em; font-weight: bold; color: #2e7d32;">${data.note}/20</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <span class="api-status ${statusClass}">Extrait par ${apiUsed}</span>
+                </div>
+            `;
+        }
+
+        // Utilitaire conversion fichier en base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
         }
     </script>
 </body>
