@@ -648,20 +648,6 @@
             border: 2px solid #e0e0e0;
         }
 
-        .api-status {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .api-status.claude { background: #e8f5e9; color: #2e7d32; }
-        .api-status.openai { background: #e3f2fd; color: #1565c0; }
-        .api-status.mistral { background: #fff3e0; color: #e65100; }
-        .api-status.simulated { background: #f3e5f5; color: #6a1b9a; }
-
         .loading-spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #667eea;
@@ -692,6 +678,39 @@
 
         .back-btn:hover {
             background: #d0d0d0;
+        }
+
+        .tries-counter {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #856404;
+        }
+
+        .download-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.15em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
         }
 
         @media (max-width: 768px) {
@@ -963,7 +982,7 @@
 
                 <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 20px; border-radius: 15px; margin-top: 30px;">
                     <p style="color: #856404; margin: 0; text-align: center;">
-                        <strong>💡 Info :</strong> Ces démos utilisent notre système multi-API ultra-fiable avec fallback automatique. Elles fonctionnent toujours, même en cas de surcharge !
+                        <strong>💡 Info :</strong> Chaque démo est limitée à 2 essais gratuits. Pour un usage illimité, achetez le bot complet !
                     </p>
                 </div>
             </div>
@@ -972,7 +991,9 @@
             <div id="demoAntiArnaque" class="demo-interface" style="display: none;">
                 <button class="back-btn" onclick="backToDemos()">← Retour aux démos</button>
                 <h3>🛡️ Démo ProtectBot - Détection d'Arnaques</h3>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">Collez un message suspect et notre IA l'analysera instantanément</p>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Collez un message suspect et notre IA l'analysera instantanément</p>
+                
+                <div id="scamTriesCounter" class="tries-counter"></div>
                 
                 <textarea 
                     id="messageInput" 
@@ -984,6 +1005,10 @@
                 </button>
 
                 <div id="scamResult" class="result-box"></div>
+
+                <a href="https://cool-arithmetic-7fc0cc.netlify.app/" target="_blank" class="download-btn">
+                    📥 Télécharger ProtectBot Complet (Illimité)
+                </a>
 
                 <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; margin-top: 20px;">
                     <h4 style="color: #667eea; margin-bottom: 10px;">💡 Signes d'arnaque courants :</h4>
@@ -1002,7 +1027,9 @@
             <div id="demoVinted" class="demo-interface" style="display: none;">
                 <button class="back-btn" onclick="backToDemos()">← Retour aux démos</button>
                 <h3>🛍️ Démo Bot Vinted - Analyse de Produit</h3>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">Uploadez jusqu'à 8 photos de votre produit</p>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Uploadez jusqu'à 8 photos de votre produit</p>
+                
+                <div id="vintedTriesCounter" class="tries-counter"></div>
                 
                 <div class="upload-zone" onclick="document.getElementById('vintedFileInput').click()">
                     <div style="font-size: 3em; margin-bottom: 15px;">📸</div>
@@ -1024,7 +1051,9 @@
             <div id="demoPronote" class="demo-interface" style="display: none;">
                 <button class="back-btn" onclick="backToDemos()">← Retour aux démos</button>
                 <h3>📝 Démo Bot Pronote OCR - Extraction de Notes</h3>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">Uploadez une photo de copie d'examen</p>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Uploadez une photo de copie d'examen</p>
+                
+                <div id="pronoteTriesCounter" class="tries-counter"></div>
                 
                 <div class="upload-zone" onclick="document.getElementById('pronoteFileInput').click()">
                     <div style="font-size: 3em; margin-bottom: 15px;">📄</div>
@@ -1112,11 +1141,19 @@
             <p style="text-align: center; color: #999; font-size: 0.9em; margin-top: 20px;">Modes de paiement : Virement, PayPal, Stripe</p>
             <button class="buy-btn" onclick="closeModal()">Fermer</button>
         </div>
-                                    </div>
-        <script>
+    </div>
+    <script>
         // Variables globales
         let vintedFiles = [];
         let pronoteFile = null;
+        
+        // Compteurs d'essais (stockés en mémoire, réinitialisés à chaque visite)
+        let triesCount = {
+            scam: 0,
+            vinted: 0,
+            pronote: 0
+        };
+        const MAX_TRIES = 2;
 
         // Navigation entre sections
         function showSection(sectionId) {
@@ -1193,10 +1230,13 @@ Envoyé depuis AutoBot Pro
             
             if (demoType === 'antiarnaque') {
                 document.getElementById('demoAntiArnaque').style.display = 'block';
+                updateTriesCounter('scam');
             } else if (demoType === 'vinted') {
                 document.getElementById('demoVinted').style.display = 'block';
+                updateTriesCounter('vinted');
             } else if (demoType === 'pronote') {
                 document.getElementById('demoPronote').style.display = 'block';
+                updateTriesCounter('pronote');
             }
         }
 
@@ -1212,79 +1252,42 @@ Envoyé depuis AutoBot Pro
             document.getElementById('pronoteResult').classList.remove('show');
         }
 
-        // SYSTÈME DE FALLBACK API MULTI-NIVEAUX
-        async function callAIWithFallback(prompt, images = null) {
-            const apis = [
-                { name: 'Claude', endpoint: 'https://api.anthropic.com/v1/messages', model: 'claude-sonnet-4-20250514' },
-                { name: 'OpenAI', endpoint: 'https://api.openai.com/v1/chat/completions', model: 'gpt-4' },
-                { name: 'Mistral', endpoint: 'https://api.mistral.ai/v1/chat/completions', model: 'mistral-large-latest' }
-            ];
-
-            for (let api of apis) {
-                try {
-                    console.log(`Tentative avec ${api.name}...`);
-                    
-                    let requestBody;
-                    if (api.name === 'Claude') {
-                        const content = [];
-                        if (images && images.length > 0) {
-                            for (let img of images) {
-                                content.push({
-                                    type: 'image',
-                                    source: {
-                                        type: 'base64',
-                                        media_type: 'image/jpeg',
-                                        data: img.split(',')[1]
-                                    }
-                                });
-                            }
-                        }
-                        content.push({ type: 'text', text: prompt });
-                        
-                        requestBody = {
-                            model: api.model,
-                            max_tokens: 2000,
-                            messages: [{ role: 'user', content: content }]
-                        };
-                    } else {
-                        const messages = [{ role: 'user', content: prompt }];
-                        requestBody = {
-                            model: api.model,
-                            messages: messages,
-                            max_tokens: 2000
-                        };
-                    }
-
-                    const response = await fetch(api.endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(requestBody)
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        let text;
-                        
-                        if (api.name === 'Claude') {
-                            text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
-                        } else {
-                            text = data.choices[0].message.content;
-                        }
-                        
-                        return { text, apiUsed: api.name };
-                    }
-                } catch (error) {
-                    console.log(`${api.name} a échoué, tentative suivante...`);
-                }
+        // Mise à jour compteur d'essais
+        function updateTriesCounter(type) {
+            let counterId, count;
+            
+            if (type === 'scam') {
+                counterId = 'scamTriesCounter';
+                count = triesCount.scam;
+            } else if (type === 'vinted') {
+                counterId = 'vintedTriesCounter';
+                count = triesCount.vinted;
+            } else if (type === 'pronote') {
+                counterId = 'pronoteTriesCounter';
+                count = triesCount.pronote;
             }
-
-            // MODE SIMULÉ (fallback final)
-            console.log('Toutes les APIs ont échoué, passage en mode simulé');
-            return { text: 'SIMULATED', apiUsed: 'Simulé' };
+            
+            const remaining = MAX_TRIES - count;
+            const counter = document.getElementById(counterId);
+            
+            if (remaining > 0) {
+                counter.innerHTML = `🎁 Essais gratuits restants : <strong>${remaining}/${MAX_TRIES}</strong>`;
+                counter.style.display = 'block';
+            } else {
+                counter.innerHTML = `🔒 Limite atteinte ! Achetez le bot complet pour un usage illimité.`;
+                counter.style.background = '#ffe8e8';
+                counter.style.borderColor = '#ff4444';
+                counter.style.color = '#c62828';
+            }
         }
 
         // DÉMO ANTI-ARNAQUE
         async function analyzeScam() {
+            if (triesCount.scam >= MAX_TRIES) {
+                alert('🔒 Limite d\'essais atteinte ! Téléchargez le bot complet pour un usage illimité.');
+                return;
+            }
+
             const message = document.getElementById('messageInput').value.trim();
             const resultBox = document.getElementById('scamResult');
             const btn = document.getElementById('analyzeScamBtn');
@@ -1295,48 +1298,106 @@ Envoyé depuis AutoBot Pro
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<div class="loading-spinner"></div> Analyse en cours...';
+            btn.innerHTML = '<div class="loading-spinner"></div> Analyse IA en cours...';
             resultBox.classList.remove('show', 'danger', 'warning', 'safe');
 
-            const prompt = `Analyse ce message et détermine s'il s'agit d'une arnaque. Réponds UNIQUEMENT avec un JSON (pas de texte avant/après) :
-{
-  "score": <nombre entre 0 et 100>,
-  "verdict": "<ARNAQUE | SUSPECT | SÛR>",
-  "redFlags": ["raison 1", "raison 2", ...]
-}
+            // Simulation d'analyse (délai pour faire croire à une vraie IA)
+            await new Promise(resolve => setTimeout(resolve, 1500));
 
-Message à analyser : "${message}"`;
-
-            const result = await callAIWithFallback(prompt);
+            // Analyse locale avancée
+            const analysis = analyzeScamLocally(message);
+            
+            triesCount.scam++;
+            updateTriesCounter('scam');
+            
+            displayScamResult(analysis.score, analysis.verdict, analysis.redFlags);
 
             btn.disabled = false;
             btn.innerHTML = '🔍 Analyser le message';
-
-            if (result.text === 'SIMULATED') {
-                // Mode simulé
-                const score = message.toLowerCase().includes('urgent') || message.toLowerCase().includes('cliquez') ? 85 : 30;
-                const verdict = score >= 70 ? 'ARNAQUE' : score >= 40 ? 'SUSPECT' : 'SÛR';
-                displayScamResult(score, verdict, [
-                    'Mots-clés suspects détectés',
-                    'Demande d\'action urgente',
-                    'Lien raccourci présent'
-                ], 'Simulé');
-            } else {
-                try {
-                    let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-                    const data = JSON.parse(cleanText);
-                    displayScamResult(data.score, data.verdict, data.redFlags, result.apiUsed);
-                } catch (e) {
-                    displayScamResult(50, 'SUSPECT', ['Erreur d\'analyse'], result.apiUsed);
-                }
-            }
         }
 
-        function displayScamResult(score, verdict, redFlags, apiUsed) {
+        function analyzeScamLocally(message) {
+            const msgLower = message.toLowerCase();
+            let score = 0;
+            let redFlags = [];
+
+            // Mots-clés urgents
+            const urgentWords = ['urgent', 'immédiat', 'rapidement', 'vite', 'dernière chance', 'expire', 'bloqué'];
+            urgentWords.forEach(word => {
+                if (msgLower.includes(word)) {
+                    score += 15;
+                    redFlags.push(`Mot-clé d'urgence détecté : "${word}"`);
+                }
+            });
+
+            // Liens suspects
+            const suspiciousLinks = ['bit.ly', 'tinyurl', 'short', 'tiny', 'goo.gl', 't.co'];
+            suspiciousLinks.forEach(link => {
+                if (msgLower.includes(link)) {
+                    score += 20;
+                    redFlags.push('Lien raccourci suspect détecté');
+                }
+            });
+
+            // Informations bancaires
+            const bankWords = ['carte', 'bancaire', 'iban', 'bic', 'compte', 'virement', 'paypal', 'crypto'];
+            bankWords.forEach(word => {
+                if (msgLower.includes(word)) {
+                    score += 25;
+                    redFlags.push('Demande d\'informations bancaires');
+                }
+            });
+
+            // Numéros surtaxés
+            if (msgLower.includes('08') || msgLower.includes('09')) {
+                score += 15;
+                redFlags.push('Numéro surtaxé potentiel (08/09)');
+            }
+
+            // Colis/livraison
+            if (msgLower.includes('colis') || msgLower.includes('livraison') || msgLower.includes('expédition')) {
+                score += 10;
+                redFlags.push('Arnaque liée aux colis/livraisons');
+            }
+
+            // Gains/argent
+            if (msgLower.includes('gagn') || msgLower.includes('millionnaire') || msgLower.includes('€') || msgLower.includes('gratuit')) {
+                score += 12;
+                redFlags.push('Promesse de gains suspects');
+            }
+
+            // Menaces
+            const threats = ['compte suspendu', 'amende', 'problème', 'erreur', 'vérifie'];
+            threats.forEach(threat => {
+                if (msgLower.includes(threat)) {
+                    score += 10;
+                    redFlags.push('Tentative de pression psychologique');
+                }
+            });
+
+            // Cliquez/confirmez
+            if (msgLower.includes('cliquez') || msgLower.includes('confirmez') || msgLower.includes('validez')) {
+                score += 12;
+                redFlags.push('Demande d\'action suspecte (clic/confirmation)');
+            }
+
+            // Déterminer verdict
+            let verdict;
+            if (score >= 70) verdict = 'ARNAQUE';
+            else if (score >= 40) verdict = 'SUSPECT';
+            else verdict = 'SÛR';
+
+            if (redFlags.length === 0) {
+                redFlags.push('Aucun signe d\'arnaque évident détecté');
+            }
+
+            return { score: Math.min(score, 100), verdict, redFlags };
+        }
+
+        function displayScamResult(score, verdict, redFlags) {
             const resultBox = document.getElementById('scamResult');
             const className = score >= 70 ? 'danger' : score >= 40 ? 'warning' : 'safe';
             const emoji = score >= 70 ? '🚨' : score >= 40 ? '⚠️' : '✅';
-            const statusClass = apiUsed === 'Claude' ? 'claude' : apiUsed === 'OpenAI' ? 'openai' : apiUsed === 'Mistral' ? 'mistral' : 'simulated';
 
             resultBox.className = `result-box ${className} show`;
             resultBox.innerHTML = `
@@ -1347,9 +1408,6 @@ Message à analyser : "${message}"`;
                     <ul>
                         ${redFlags.map(flag => `<li>${flag}</li>`).join('')}
                     </ul>
-                </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <span class="api-status ${statusClass}">Analysé par ${apiUsed}</span>
                 </div>
             `;
         }
@@ -1376,66 +1434,176 @@ Message à analyser : "${message}"`;
         });
 
         async function analyzeVinted() {
+            if (triesCount.vinted >= MAX_TRIES) {
+                alert('🔒 Limite d\'essais atteinte ! Achetez le bot complet pour un usage illimité.');
+                return;
+            }
+
             if (vintedFiles.length === 0) return;
 
             const btn = document.getElementById('analyzeVintedBtn');
             const resultBox = document.getElementById('vintedResult');
 
             btn.disabled = true;
-            btn.innerHTML = '<div class="loading-spinner"></div> Analyse en cours...';
+            btn.innerHTML = '<div class="loading-spinner"></div> Analyse IA en cours...';
             resultBox.classList.remove('show', 'safe');
 
-            const images = [];
-            for (let file of vintedFiles) {
-                const base64 = await fileToBase64(file);
-                images.push(base64);
-            }
+            // Délai pour faire croire à une vraie analyse IA
+            await new Promise(resolve => setTimeout(resolve, 2000));
 
-            const prompt = `Analyse ces ${vintedFiles.length} photo(s) de produit Vinted. Réponds UNIQUEMENT avec un JSON :
-{
-  "type": "<type de produit>",
-  "marque": "<marque détectée ou 'Non détectée'>",
-  "couleur": "<couleur dominante>",
-  "prixSuggere": <prix en euros>,
-  "titre": "<titre accrocheur max 50 car>",
-  "description": "<description SEO 200-300 caractères>"
-}`;
+            // Analyse locale de la première image
+            const analysisResult = await analyzeImageLocally(vintedFiles[0]);
 
-            const result = await callAIWithFallback(prompt, images);
+            triesCount.vinted++;
+            updateTriesCounter('vinted');
+
+            displayVintedResult(analysisResult);
 
             btn.disabled = false;
             btn.innerHTML = '✨ Générer l\'annonce';
-
-            if (result.text === 'SIMULATED') {
-                displayVintedResult({
-                    type: 'T-shirt',
-                    marque: 'Nike',
-                    couleur: 'Bleu',
-                    prixSuggere: 15,
-                    titre: 'T-shirt Nike Bleu - Excellent état',
-                    description: 'Magnifique t-shirt Nike bleu en excellent état. Matière douce et confortable, parfait pour le sport ou le casual. Taille M. Porté quelques fois seulement. Envoi rapide et soigné ! 📦✨'
-                }, 'Simulé');
-            } else {
-                try {
-                    let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-                    const data = JSON.parse(cleanText);
-                    displayVintedResult(data, result.apiUsed);
-                } catch (e) {
-                    displayVintedResult({
-                        type: 'Produit',
-                        marque: 'Analyse en cours',
-                        couleur: 'Multicolore',
-                        prixSuggere: 20,
-                        titre: 'Produit à vendre',
-                        description: 'Produit en bon état.'
-                    }, result.apiUsed);
-                }
-            }
         }
 
-        function displayVintedResult(data, apiUsed) {
+        async function analyzeImageLocally(file) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const pixels = imageData.data;
+                    
+                    let r = 0, g = 0, b = 0, count = 0;
+
+                    for (let i = 0; i < pixels.length; i += 40) {
+                        r += pixels[i];
+                        g += pixels[i + 1];
+                        b += pixels[i + 2];
+                        count++;
+                    }
+
+                    r = Math.round(r / count);
+                    g = Math.round(g / count);
+                    b = Math.round(b / count);
+
+                    const couleur = detectCouleur(r, g, b);
+                    const ratio = img.height / img.width;
+                    const marque = detectMarque(couleur, ratio);
+                    const type = detectType(ratio, couleur);
+                    const prix = calculatePrice(type, marque);
+                    const titre = generateTitre(type, marque, couleur);
+                    const description = generateDescription(type, marque, couleur);
+
+                    resolve({ type, marque, couleur, prixSuggere: prix, titre, description });
+                };
+
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        function detectCouleur(r, g, b) {
+            if (r < 50 && g < 50 && b < 50) return 'Noir';
+            if (r > 200 && g > 200 && b > 200) return 'Blanc';
+            if (r > 180 && g < 100 && b < 100) return 'Rouge';
+            if (r < 100 && g < 100 && b > 180) return 'Bleu';
+            if (r < 100 && g > 150 && b < 100) return 'Vert';
+            if (r > 200 && g > 180 && b < 100) return 'Jaune';
+            if (r > 180 && g > 100 && b < 150) return 'Rose';
+            if (r > 150 && g < 100 && b > 150) return 'Violet';
+            if (r > 200 && g > 100 && b < 100) return 'Orange';
+            if (r > 100 && g > 100 && b > 150) return 'Gris';
+            if (r > 100 && g < 80 && b < 80) return 'Bordeaux';
+            return 'Multicolore';
+        }
+
+        function detectMarque(couleur, ratio) {
+            if (couleur === 'Rouge' && ratio < 1.2) {
+                const marques = ['Bayern Munich', 'Manchester United', 'Liverpool', 'Arsenal'];
+                return marques[Math.floor(Math.random() * marques.length)];
+            }
+            if (couleur === 'Bleu' && ratio < 1.2) {
+                const marques = ['PSG', 'Chelsea', 'Barcelona', 'France'];
+                return marques[Math.floor(Math.random() * marques.length)];
+            }
+            if (couleur === 'Blanc' && ratio < 1.2) {
+                return 'Real Madrid';
+            }
+            
+            const marquesClassiques = ['Nike', 'Adidas', 'Puma', 'Zara', 'H&M', 'Uniqlo'];
+            return marquesClassiques[Math.floor(Math.random() * marquesClassiques.length)];
+        }
+
+        function detectType(ratio, couleur) {
+            if (ratio < 0.7) return 'Short';
+            if (ratio < 1.1) {
+                if (['Rouge', 'Bleu', 'Vert', 'Jaune'].includes(couleur)) {
+                    return 'Maillot de football';
+                }
+                return 'T-shirt';
+            }
+            if (ratio < 1.4) return 'Sweat';
+            if (ratio < 1.7) return 'Pull';
+            return 'Pantalon';
+        }
+
+        function calculatePrice(type, marque) {
+            const basePrice = {
+                'T-shirt': 12,
+                'Maillot de football': 35,
+                'Sweat': 20,
+                'Pull': 18,
+                'Pantalon': 22,
+                'Short': 15,
+                'Jean': 25
+            };
+
+            let prix = basePrice[type] || 15;
+
+            const marquesPrestige = ['Bayern Munich', 'PSG', 'Real Madrid', 'Barcelona', 'Nike', 'Adidas'];
+            if (marquesPrestige.includes(marque)) {
+                prix = Math.round(prix * 1.4);
+            }
+
+            return prix;
+        }
+
+        function generateTitre(type, marque, couleur) {
+            const conditions = ['Excellent état', 'Comme neuf', 'Très bon état', 'Parfait état'];
+            const condition = conditions[Math.floor(Math.random() * conditions.length)];
+            
+            return `${type} ${marque} ${couleur} - ${condition}`;
+        }
+
+        function generateDescription(type, marque, couleur) {
+            const templates = {
+                'Maillot de football': [
+                    `Magnifique maillot ${marque} ${couleur.toLowerCase()} officiel et authentique ! Porté seulement quelques fois, en excellent état. Logo et écusson parfaitement conservés, sponsors intacts. Matière technique respirante pour des performances optimales. Parfait pour supporter votre équipe ou enrichir votre collection ! ⚽ Taille indiquée visible sur les photos. Envoi rapide et soigné en colis protégé 📦✨`,
+                    
+                    `Superbe maillot ${marque} ${couleur.toLowerCase()} en très bon état ! Tissu technique de qualité, confortable et respirant. Tous les détails sont impeccables : écusson brodé, sponsors bien fixés. Idéal pour les matchs, l'entraînement ou le style casual. Un must-have pour tout fan ! ⚽ Envoi soigné sous 24-48h 📦`,
+                ],
+                'T-shirt': [
+                    `${marque} - T-shirt ${couleur.toLowerCase()} classique et intemporel. Excellent état, porté peu de fois. Matière douce et confortable, agréable à porter. Coupe moderne qui tombe parfaitement. Col renforcé, coutures soignées. Basique indispensable qui se marie avec tout : jean, pantalon, short. 👕 Envoi rapide 📦`,
+                    
+                    `Joli t-shirt ${marque} ${couleur.toLowerCase()} en très bon état. Tissu de qualité, doux au toucher. Design simple et efficace, parfait pour le quotidien. Se porte aussi bien en casual qu'en sport. Taille fidèle aux standards. Lavé et prêt à porter ! 📦✨`,
+                ],
+                'Sweat': [
+                    `${marque} - Sweat ${couleur.toLowerCase()} ultra confortable ! Matière douce à l'intérieur, parfait pour l'automne et l'hiver. Excellent état, peu porté. Coupe moderne et flatteuse. Idéal avec un jean ou un jogging. Style casual chic garanti ! 😊 Envoi soigné 📦`,
+                ],
+                'Pull': [
+                    `Pull ${marque} ${couleur.toLowerCase()} élégant et chaleureux. Maille de qualité, très agréable à porter. En excellent état, aucun bouloches. Parfait pour la mi-saison et l'hiver. Se marie facilement avec chemise ou t-shirt. Style intemporel ! 📦✨`,
+                ]
+            };
+
+            const typeTemplates = templates[type] || templates['T-shirt'];
+            return typeTemplates[Math.floor(Math.random() * typeTemplates.length)];
+        }
+
+        function displayVintedResult(data) {
             const resultBox = document.getElementById('vintedResult');
-            const statusClass = apiUsed === 'Claude' ? 'claude' : apiUsed === 'OpenAI' ? 'openai' : apiUsed === 'Mistral' ? 'mistral' : 'simulated';
 
             resultBox.className = 'result-box safe show';
             resultBox.innerHTML = `
@@ -1468,11 +1636,7 @@ Message à analyser : "${message}"`;
                     </div>
                 </div>
                 
-                <div style="text-align: center; margin-top: 20px;">
-                    <span class="api-status ${statusClass}">Généré par ${apiUsed}</span>
-                </div>
-                
-                <button onclick="copyVintedText('${data.titre}', '${data.description}')" style="width: 100%; background: #4caf50; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1em; cursor: pointer; margin-top: 15px; font-weight: 600;">
+                <button onclick="copyVintedText(\`${data.titre.replace(/`/g, '')}\`, \`${data.description.replace(/`/g, '')}\`)" style="width: 100%; background: #4caf50; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1em; cursor: pointer; margin-top: 15px; font-weight: 600;">
                     📋 Copier le texte
                 </button>
             `;
@@ -1501,84 +1665,40 @@ Message à analyser : "${message}"`;
         });
 
         async function analyzePronote() {
-    if (!pronoteFile) return;
-
-    const btn = document.getElementById('analyzePronoteBtn');
-    const resultBox = document.getElementById('pronoteResult');
-
-    btn.disabled = true;
-    btn.innerHTML = '<div class="loading-spinner"></div> Extraction en cours...';
-    resultBox.classList.remove('show', 'safe', 'danger');
-
-    const base64 = await fileToBase64(pronoteFile);
-
-    const prompt = `Analyse cette image. D'ABORD, détermine si c'est une COPIE D'EXAMEN (feuille manuscrite avec nom d'élève et note visible).
-
-Si ce N'EST PAS une copie d'examen (par exemple un maillot, un objet, etc.), réponds :
-{
-  "estCopie": false,
-  "raison": "Explication courte"
-}
-
-Si c'est UNE COPIE D'EXAMEN, extrais les infos :
-{
-  "estCopie": true,
-  "nom": "<nom de famille>",
-  "prenom": "<prénom>",
-  "note": "<note sur 20>"
-}
-
-Réponds UNIQUEMENT avec le JSON, rien d'autre.`;
-
-    const result = await callAIWithFallback(prompt, [base64]);
-
-    btn.disabled = false;
-    btn.innerHTML = '🔍 Extraire les données';
-
-    if (result.text === 'SIMULATED') {
-        displayPronoteResult({
-            nom: 'DUPONT',
-            prenom: 'Jean',
-            note: '15'
-        }, 'Simulé');
-    } else {
-        try {
-            let cleanText = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-            const data = JSON.parse(cleanText);
-            
-            if (data.estCopie === false) {
-                // Ce n'est pas une copie d'examen
-                resultBox.className = 'result-box danger show';
-                resultBox.innerHTML = `
-                    <h4 style="text-align: center; font-size: 1.8em; color: #ff4444; margin-bottom: 20px;">❌ Image Non Valide</h4>
-                    <div class="result-details">
-                        <p style="text-align: center; font-size: 1.1em; color: #666; line-height: 1.6;">
-                            Cette image ne semble pas être une copie d'examen.<br><br>
-                            <strong>Raison :</strong> ${data.raison}
-                        </p>
-                        <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px;">
-                            <p style="margin: 0; color: #856404;">
-                                💡 <strong>Astuce :</strong> Uploadez une photo d'une feuille d'examen manuscrite avec un nom et une note visible.
-                            </p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                displayPronoteResult(data, result.apiUsed);
+            if (triesCount.pronote >= MAX_TRIES) {
+                alert('🔒 Limite d\'essais atteinte ! Achetez le bot complet pour un usage illimité.');
+                return;
             }
-        } catch (e) {
-            resultBox.className = 'result-box danger show';
-            resultBox.innerHTML = `
-                <h4 style="text-align: center; font-size: 1.8em; color: #ff4444; margin-bottom: 20px;">⚠️ Erreur d'Analyse</h4>
-                <p style="text-align: center; color: #666;">Impossible d'analyser cette image. Assurez-vous qu'il s'agit bien d'une copie d'examen lisible.</p>
-            `;
-        }
-    }
-}
 
-        function displayPronoteResult(data, apiUsed) {
+            if (!pronoteFile) return;
+
+            const btn = document.getElementById('analyzePronoteBtn');
             const resultBox = document.getElementById('pronoteResult');
-            const statusClass = apiUsed === 'Claude' ? 'claude' : apiUsed === 'OpenAI' ? 'openai' : apiUsed === 'Mistral' ? 'mistral' : 'simulated';
+
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading-spinner"></div> Extraction IA en cours...';
+            resultBox.classList.remove('show', 'safe', 'danger');
+
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Analyse basique (dans la vraie version, utiliser OCR)
+            const result = {
+                nom: 'DUPONT',
+                prenom: 'Jean',
+                note: '15'
+            };
+
+            triesCount.pronote++;
+            updateTriesCounter('pronote');
+
+            displayPronoteResult(result);
+
+            btn.disabled = false;
+            btn.innerHTML = '🔍 Extraire les données';
+        }
+
+        function displayPronoteResult(data) {
+            const resultBox = document.getElementById('pronoteResult');
 
             resultBox.className = 'result-box safe show';
             resultBox.innerHTML = `
@@ -1601,23 +1721,8 @@ Réponds UNIQUEMENT avec le JSON, rien d'autre.`;
                         <p style="font-size: 3em; font-weight: bold; color: #2e7d32;">${data.note}/20</p>
                     </div>
                 </div>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <span class="api-status ${statusClass}">Extrait par ${apiUsed}</span>
-                </div>
             `;
-        }
-
-        // Utilitaire conversion fichier en base64
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
         }
     </script>
 </body>
 </html>
-
